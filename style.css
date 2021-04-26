@@ -1,0 +1,21 @@
+#player-form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.btnChar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#deletePlayersBtn {
+    color: red;
+}

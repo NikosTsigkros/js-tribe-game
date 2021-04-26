@@ -1,13 +1,14 @@
-import Character from '../character/Character';
+import Character from "../character/Character";
 
 class Orc extends Character {
-    constructor() {
+    constructor(name) {
         super();
+        this.name = name;
         this.attack += 3;
         this.defence += 4;
         this.speed += 1;
         this.race = "orc";
-        this.color = "red";
+        this.color = this.getRaceColor(this.race);
         console.log("Orc was created!");
     }
 }

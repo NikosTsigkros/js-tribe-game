@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div id="app">
-    </div>
-    <script src="/js-tribe-game.e31bb0bc.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="/style.e308ff8e.css">
+    <script src="/style.e308ff8e.js"></script></head>
+    <body>
+        <div id="app"></div>
+        <canvas id="can"></canvas>
+        <div id="buttons-div" style="display: flex;">
+            <button id="btnStartRace">Start Race</button>
+            <button id="btnStopRace">Stop Race</button>
+            <button id="btnResetRace">Reset Race</button>
+        </div>
+        <div id="player-form">
+            <div class="input-group">
+                <label for="playerName">Name:</label>
+                <input id="playerName" type="text">
+            </div>
+            <div class="input-group">
+                <label for="playerRace">Race:</label>
+                <select id="playerRace">
+                    <option value="human">Human</option>
+                    <option value="orc">Orc</option>
+                    <option value="elf">Elf</option>
+                </select>
+            </div>
+            <button id="createPlayerBtn" class="btnChar">
+                Create Character
+            </button>
+            <hr>
+            <button id="deletePlayersBtn" class="btnChar">
+                Delete All Characters
+            </button>
+        </div>
+        <script src="/js-tribe-game.e31bb0bc.js"></script>
+    </body>
 </html>

@@ -117,13 +117,27 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"Components/Characters/character/Character.js":[function(require,module,exports) {
+})({"assets/images/knight.png":[function(require,module,exports) {
+module.exports = "/knight.b4e9b365.png";
+},{}],"assets/images/orc.png":[function(require,module,exports) {
+module.exports = "/orc.efbde037.png";
+},{}],"assets/images/elf.png":[function(require,module,exports) {
+module.exports = "/elf.e93b3a29.png";
+},{}],"Components/Characters/character/Character.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _knight = _interopRequireDefault(require("../../../assets/images/knight.png"));
+
+var _orc = _interopRequireDefault(require("../../../assets/images/orc.png"));
+
+var _elf = _interopRequireDefault(require("../../../assets/images/elf.png"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -133,37 +147,95 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var Character = /*#__PURE__*/function () {
   function Character() {
-    var attack = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-    var defence = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-    var speed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "player";
+    var attack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+    var defence = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
+    var speed = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
 
     _classCallCheck(this, Character);
 
+    this.name = name;
     this.position = {
-      x: 0
+      x: 0,
+      y: null
     };
     this.attack = attack;
     this.defence = defence;
     this.speed = speed;
-    this.color = "yellow";
+    this.race = null;
+    this.color = this.getRaceColor(this.race);
     console.log("Character Created!");
   }
 
   _createClass(Character, [{
+    key: "getRaceColor",
+    value: function getRaceColor(race) {
+      switch (race) {
+        case "human":
+          return "blue";
+
+        case "orc":
+          return "red";
+
+        case "elf":
+          return "green";
+
+        default:
+          return "yellow";
+      }
+    }
+  }, {
+    key: "getRaceImage",
+    value: function getRaceImage(race) {
+      switch (race) {
+        case "human":
+          return _knight.default;
+
+        case "orc":
+          return _orc.default;
+
+        case "elf":
+          return _elf.default;
+
+        default:
+          return null;
+      }
+    }
+  }, {
     key: "show",
     value: function show() {
       console.log("Attack: ".concat(this.attack, ", Defence: ").concat(this.defence, ", Speed: ").concat(this.speed));
     }
   }, {
     key: "draw",
-    value: function draw(ctx, position) {
-      ctx.fillStyle = this.color;
-      ctx.fillRect(this.position.x, (position * this.defence - this.defence) * 3, this.attack * 3, this.defence * 3);
+    value: function draw(ctx, positionY) {
+      this.position.y = positionY; // this.position.y = (this.position.y * this.defence - this.defence) * 10;
+
+      this.position.y = this.position.y * 80 + 20;
+      ctx.fillStyle = this.color; // ctx.fillRect(
+      //     this.position.x,
+      //     this.position.y,
+      //     this.attack * 3,
+      //     this.defence * 3
+      // );
+
+      ctx.font = "20px Arial";
+      ctx.fillText(this.name, this.position.x, this.position.y);
+      var img = new Image();
+      img.src = this.getRaceImage(this.race);
+      ctx.drawImage(img, this.position.x, this.position.y, 50, 50); // img.onload = function(x = this.position.x) {
+      //     ctx.drawImage(img, x, 0, 100, 100);
+      // };
     }
   }, {
     key: "move",
     value: function move() {
       this.position.x += this.speed;
+    }
+  }, {
+    key: "resetPosition",
+    value: function resetPosition() {
+      this.position.x = 0;
     }
   }]);
 
@@ -172,7 +244,7 @@ var Character = /*#__PURE__*/function () {
 
 var _default = Character;
 exports.default = _default;
-},{}],"Components/Characters/human/Human.js":[function(require,module,exports) {
+},{"../../../assets/images/knight.png":"assets/images/knight.png","../../../assets/images/orc.png":"assets/images/orc.png","../../../assets/images/elf.png":"assets/images/elf.png"}],"Components/Characters/human/Human.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -207,17 +279,18 @@ var Human = /*#__PURE__*/function (_Character) {
 
   var _super = _createSuper(Human);
 
-  function Human() {
+  function Human(name) {
     var _this;
 
     _classCallCheck(this, Human);
 
     _this = _super.call(this);
+    _this.name = name;
     _this.attack += 5;
     _this.defence += 2;
     _this.speed += 2;
     _this.race = "human";
-    _this.color = "blue";
+    _this.color = _this.getRaceColor(_this.race);
     console.log("Human was created");
     return _this;
   }
@@ -262,17 +335,18 @@ var Orc = /*#__PURE__*/function (_Character) {
 
   var _super = _createSuper(Orc);
 
-  function Orc() {
+  function Orc(name) {
     var _this;
 
     _classCallCheck(this, Orc);
 
     _this = _super.call(this);
+    _this.name = name;
     _this.attack += 3;
     _this.defence += 4;
     _this.speed += 1;
     _this.race = "orc";
-    _this.color = "red";
+    _this.color = _this.getRaceColor(_this.race);
     console.log("Orc was created!");
     return _this;
   }
@@ -317,18 +391,19 @@ var Elf = /*#__PURE__*/function (_Character) {
 
   var _super = _createSuper(Elf);
 
-  function Elf() {
+  function Elf(name) {
     var _this;
 
     _classCallCheck(this, Elf);
 
     _this = _super.call(this);
+    _this.name = name;
     _this.attack += 1;
     _this.ability += 1;
     _this.defence += 1;
     _this.speed += 4;
     _this.race = "elf";
-    _this.color = "green";
+    _this.color = _this.getRaceColor(_this.race);
     console.log("Elf was created");
     return _this;
   }
@@ -371,15 +446,17 @@ var _characters = _interopRequireDefault(require("./Components/Characters/charac
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
+
+var players = ["Paul", "Goruk"];
 var CANVAS_WIDTH = 800;
 var CANVAS_HEIGHT = 500;
+var intervalRun = false;
 
 var createCanvas = function createCanvas() {
-  var canvas = document.createElement("canvas");
-  canvas.id = "can";
+  var canvas = document.querySelector("#can");
   canvas.width = CANVAS_WIDTH;
-  canvas.height = CANVAS_HEIGHT;
-  document.body.appendChild(canvas);
+  canvas.height = CANVAS_HEIGHT; // document.body.appendChild(canvas);
 };
 
 var clearCanvas = function clearCanvas() {
@@ -389,38 +466,92 @@ var clearCanvas = function clearCanvas() {
 // Create the Elements
 
 
+createCanvas();
 var app = document.getElementById("app");
 app.style.textAlign = "center";
-var btn = document.createElement("button");
-btn.appendChild(document.createTextNode('Start Race'));
-btn.style.display = "block";
-btn.style.margin = "10px";
-document.body.appendChild(btn); // Create Canvas
+var btnStartRace = document.querySelector("#btnStartRace");
+btnStartRace.style.display = "block";
+btnStartRace.style.margin = "10px";
+var btnStopRace = document.querySelector("#btnStopRace");
+btnStopRace.style.display = "block";
+btnStopRace.style.margin = "10px";
+var btnResetRace = document.querySelector("#btnResetRace");
+btnResetRace.style.display = "block";
+btnResetRace.style.margin = "10px";
 
-createCanvas();
+var createPlayer = function createPlayer(name, race) {
+  switch (race) {
+    case "human":
+      return new _characters.default.human(name);
+
+    case "orc":
+      return new _characters.default.orc(name);
+
+    case "elf":
+      return new _characters.default.elf(name);
+
+    default:
+      return null;
+  }
+};
+
+var playerNameInput = document.querySelector("#playerName");
+var playerRaceInput = document.querySelector("#playerRace");
+var createPlayerBtn = document.querySelector("#createPlayerBtn");
+createPlayerBtn.addEventListener("click", function () {
+  var player = createPlayer(playerNameInput.value, playerRaceInput.value);
+  players.push(player);
+});
+var deletePlayersBtn = document.querySelector("#deletePlayersBtn");
+deletePlayersBtn.addEventListener("click", function () {
+  players = (_readOnlyError("players"), []);
+  drawPlayers();
+});
+btnStartRace.addEventListener("click", function () {
+  intervalRun = true;
+  var myInterval = setInterval(function () {
+    if (intervalRun) {
+      drawPlayers();
+      players.forEach(function (player) {
+        player.move();
+      });
+    }
+  }, 100);
+});
+btnStopRace.addEventListener("click", function () {
+  intervalRun = false;
+  drawPlayers();
+});
+btnResetRace.addEventListener("click", function () {
+  intervalRun = false;
+  Paul.resetPosition();
+  Goruk.resetPosition();
+  Raya.resetPosition();
+  drawPlayers();
+}); // Create Canvas
+
 var canvas = document.getElementById("can");
 var ctx = canvas.getContext("2d"); // Create Players
 
-var Nikos = new _characters.default.character();
-var Sonia = new _characters.default.human();
-var Suzan = new _characters.default.orc();
-var Raya = new _characters.default.elf(); // The Loop
+players[0] = new _characters.default.human("Paul");
+players[1] = new _characters.default.orc("Goruk");
+players[2] = new _characters.default.elf("Raya"); // The Loop
 
 var myInterval = setInterval(function () {
-  clearCanvas();
-  Nikos.show();
-  Nikos.draw(ctx, 1);
-  Nikos.move();
-  Sonia.show();
-  Sonia.draw(ctx, 2);
-  Sonia.move();
-  Suzan.show();
-  Suzan.draw(ctx, 3);
-  Suzan.move();
-  Raya.show();
-  Raya.draw(ctx, 4);
-  Raya.move();
+  drawPlayers();
 }, 100);
+
+var drawPlayers = function drawPlayers() {
+  if (players.length === 0) {
+    clearCanvas();
+  } else {
+    clearCanvas();
+    players.forEach(function (player, key) {
+      player.show();
+      player.draw(ctx, key);
+    });
+  }
+};
 },{"./Components/Characters/characters":"Components/Characters/characters.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -449,7 +580,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59564" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60171" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
